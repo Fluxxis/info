@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIGHIX - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+        }
+
+        /* Анимированный фон */
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000 25%, #1a1a1a 25%, #1a1a1a 50%, #000 50%, #000 75%, #1a1a1a 75%, #1a1a1a);
+            background-size: 60px 60px;
+            animation: slide 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes slide {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 60px 60px;
+            }
+        }
+
+        /* Дополнительный слой для глубины */
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(20px, -20px);
+            }
+        }
+
+        /* Контейнер страницы */
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Основной контент */
+        .content {
+            text-align: center;
+            z-index: 1;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Аватар в кружке */
+        .avatar-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 40px;
+            animation: bounce 3s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .avatar-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+            padding: 4px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3),
+                        inset 0 0 40px rgba(0, 0, 0, 0.3);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: counter-rotate 10s linear infinite;
+        }
+
+        @keyframes counter-rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        /* Гало эффект вокруг аватара */
+        .avatar-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            border-top-color: rgba(255, 255, 255, 0.3);
+            border-right-color: rgba(255, 255, 255, 0.1);
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Текст */
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 1s ease-out 0.2s both;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: #aaa;
+            margin-bottom: 50px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            animation: slideInUp 1s ease-out 0.4s both;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Сетка с социальными кнопками */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 30px;
+            max-width: 500px;
+            margin: 40px auto 0;
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .social-button {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .social-button:nth-child(1) { animation-delay: 0s; }
+        .social-button:nth-child(2) { animation-delay: 0.5s; }
+        .social-button:nth-child(3) { animation-delay: 1s; }
+        .social-button:nth-child(4) { animation-delay: 1.5s; }
+        .social-button:nth-child(5) { animation-delay: 2s; }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .social-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-circle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .social-button:hover .social-circle::before {
+            left: 100%;
+        }
+
+        .social-button:hover .social-circle {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        svg {
+            width: 60%;
+            height: 60%;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+            transition: all 0.3s ease;
+        }
+
+        .social-button:hover svg {
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+            transform: scale(1.1);
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .container {
+                height: auto;
+                min-height: 100vh;
+                padding: 60px 20px;
+            }
+
+            .avatar-wrapper {
+                width: 140px;
+                height: 140px;
+                margin: 0 auto 30px;
+            }
+
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 40px;
+            }
+
+            .social-grid {
+                gap: 20px;
+                max-width: 100%;
+                grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+                margin: 30px auto 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 15px;
+            }
+
+            .avatar-wrapper {
+                width: 120px;
+                height: 120px;
+                margin: 0 auto 25px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 30px;
+            }
+
+            .social-grid {
+                gap: 15px;
+                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            }
+        }
+
+        /* Скрытое аудио */
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background"></div>
+    <div class="background-overlay"></div>
+
+    <div class="container">
+        <div class="content">
+            <!-- Аватар -->
+            <div class="avatar-wrapper">
+                <div class="avatar-circle">
+                    <img src="ava.png" alt="HIGHIX">
+                </div>
+            </div>
+
+            <!-- Текст -->
+            <h1>HIGHIX</h1>
+            <p class="subtitle">CREATIVE • BUILDER • DESIGNER</p>
+
+            <!-- Социальные кнопки -->
+            <div class="social-grid">
+                <!-- Roblox -->
+                <a href="https://www.roblox.com/users/4583484745/profile?friendshipSourceType=PlayerSearch" 
+                   class="social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="social-circle">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M5.164 0L.16 18.928 18.836 24 23.84 5.072 5.164 0zm8.747 15.354l-5.219-1.417 1.399-5.29 5.22 1.418-1.4 5.29z"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Telegram -->
+                <a href="https://t.me/highix" 
+                   class="social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="social-circle">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.481-.428-.008-1.252-.242-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Spotify -->
+                <a href="https://open.spotify.com/playlist/4xqWidWkyCHpOJRkf791qq?si=KY25VsLETDek4jGYsFHvyg&pi=vi9usY9oTBCpC" 
+                   class="social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="social-circle">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.56 18.72 12.84c.359.181.54.78.24 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- TikTok -->
+                <a href="https://www.tiktok.com/@heylon719?_r=1&_t=ZG-93ROZ3lTeL2" 
+                   class="social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="social-circle">
+                        <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Endway -->
+                <a href="https://endway.org/members/highux.65489/" 
+                   class="social-button" target="_blank" rel="noopener noreferrer">
+                    <div class="social-circle">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M4 4h12.5v3H7.5v3h8v3h-8v4h9v3H4V4z" fill="white"/>
+                            <path d="M14 9l6 3-6 3v-2h-4v-2h4V9z" fill="white"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Скрытая музыка -->
+    <audio id="bgMusic" autoplay loop preload="auto" playsinline>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+
+        // Скрытый автозапуск song.mp3 из той же папки, где лежит HTML
+        audio.volume = 0.3;
+        audio.play().catch(() => {});
+
+        const startMusic = () => {
+            audio.play().catch(() => {});
+        };
+
+        document.addEventListener('click', startMusic, { once: true });
+        document.addEventListener('touchstart', startMusic, { once: true });
+        document.addEventListener('keydown', startMusic, { once: true });
+
+        // Паралакс эффект при движении мыши
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            const overlay = document.querySelector('.background-overlay');
+            overlay.style.background = `radial-gradient(circle at ${20 + x * 10}% ${50 + y * 10}%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                                        radial-gradient(circle at ${80 - x * 10}% ${80 - y * 10}%, rgba(255, 255, 255, 0.05) 0%, transparent 50%)`;
+        });
+    </script>
+</body>
+</html>
